@@ -1,0 +1,59 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "course_code": "Leanne Graham",
+      "course_name": "Brettr",
+      "course_description": "Sincere@april.bizw",
+      "course_year": "hildegard.orgr",
+      "course_term": "300",
+      "course_credits": "50",
+      "course_capacity": "90",
+      "course_prerequisites": "Java, Javascript, Nodejs"
+    },
+    {
+      "id": 2,
+      "course_code": "Ervin Howell",
+      "course_name": "Antonette",
+      "course_description": "Shanna@melissa.tv",
+      "course_year": "anastasia.neter",
+      "course_term": "100",
+      "course_credits": "200",
+      "course_capacity": "9",
+      "course_prerequisites": "Java, Javascript, Nodejs"
+    },
+    {
+      "id": 3,
+      "course_code": "test1",
+      "course_name": "TestUser1",
+      "course_description": "testuser1@melissa.tv",
+      "course_year": "testuser1.neter",
+      "course_term": "700",
+      "course_credits": "600",
+      "course_capacity": "12",
+      "course_prerequisites": "Java, Javascript, Nodejs"
+    },
+    {
+      "id": 4,
+      "course_code": "test2",
+      "course_name": "TestUser2",
+      "course_description": "testuser2@melissa.tv",
+      "course_year": "testuser2.neter",
+      "course_term": "7200",
+      "course_credits": "6020",
+      "course_capacity": "122",
+      "course_prerequisites": "Java, Javascript, Nodejs"
+    },
+    {
+      "id": 5,
+      "course_code": "test3",
+      "course_name": "TestUser3",
+      "course_description": "testuser3@melissa.tv",
+      "course_year": "testuser3.neter",
+      "course_term": "300",
+      "course_credits": "3020",
+      "course_capacity": "322",
+      "course_prerequisites": "Java, Javascript, Nodejs"
+    }
+  ]
+}
