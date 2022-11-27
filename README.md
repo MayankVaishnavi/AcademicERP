@@ -3,11 +3,11 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 
-#Go to the command line where your project is and install the follwoing modules:
+#Go to the command line where your project is and install the following modules:
 1. npm i axios
 2. npm i react-router-dom
 3. npm i bootstrap
-4. npm i -g json-server (It will create db.json file and we have to make the server up , for that go to the project directory from command line and write json-server --watch db.json --port 8000 )
+4. npm i -g json-server -> (It will create db.json file and we have to make the server up , for that go to the project directory from command line and write json-server --watch db.json --port 8000 )
 
 
 
