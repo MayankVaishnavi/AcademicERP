@@ -3,10 +3,28 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import './style.css'
 import './test.js'
+import Logout from "./Logout";
+import Login from "./Login";
 
 const Emplisting = () => {
     const[empdata, empdatachange] = useState([]);
     const navigate=useNavigate();
+
+  //=====================================================================
+  const [showLogin, setShowLogin] =useState(false)
+  //=====================================================================
+
+  const getEmail=window.localStorage.getItem("emailData")
+  const getPassword=window.localStorage.getItem("passwordData")
+
+
+  useEffect(()=>{ 
+    if(getEmail && getPassword){
+        setShowLogin(true);
+    } 
+  },[]); 
+ //=====================================================================
+
 
     const getcourses = async () => {
         try {
@@ -24,8 +42,8 @@ const Emplisting = () => {
 
     const LoadEdit=(id) => {
         navigate("/employee/edit/"+id);
-
     }
+
 
     const Removefunction=(id) => {
         if(window.confirm('Do you want to remove the employee ?')){
@@ -40,7 +58,10 @@ const Emplisting = () => {
     }
 
     return (
-        <div className="container h-100 d-inline-block">
+     <>
+     { showLogin ? 
+       <div className="container h-100 d-inline-block">
+        {<Logout/>}
             <div className="card" style={{"textAlign": "left"}}>
                 <div className="card-title p-3 mb-2 bg-info text-dark">
                     <h2>Course Listing</h2>
@@ -87,8 +108,12 @@ const Emplisting = () => {
                     </table>
                 </div>
             </div>
-        </div>
-    )
+        </div> : <Login/> 
+    }
+    </>
+
+        )
+    
 }
 
 

@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import './style.css'
-// import './test.js'
+// import Logout from "./Logout";
 
 const EmpEdit = () => {
     const[show1, setShow1]=useState(true);
@@ -25,6 +25,7 @@ const EmpEdit = () => {
             course_prerequisiteschange(res.data.course_prerequisites);
         }).catch(err => {
             console.log(err.message);
+            {err.response.status === 404 && navigate("*")}
         })
     },[empid]);
 
@@ -46,7 +47,7 @@ const EmpEdit = () => {
         axios.put("http://localhost:8000/data/"+empid, empdata)
              .then(res => {
                 alert("Changes saved successfully");
-                navigate("/");
+                navigate("/course");
              }).catch(err => {
                 console.log(err.message);
             });
@@ -58,6 +59,7 @@ const EmpEdit = () => {
     }
     return (
         <div className="row">
+            {/* {<Logout/>} */}
             <div className="offset-lg-3 col-lg-6">
                 <form className="container" onSubmit={handlesubmit}>
                     <div className="card" style={{"textAlign": "left"}}>
@@ -134,7 +136,7 @@ const EmpEdit = () => {
                                     <div className="form-group">
                                         <button disabled={show1} className="btn btn-outline-success" type="submit">Save Changes</button>
                                         <button disabled={show2} className="btn btn-outline-primary" type="button" onClick={handleclick}>Modify</button>
-                                        <Link to="/" className="btn btn-outline-danger">Back</Link>     
+                                        <Link to="/course" className="btn btn-outline-danger">Back</Link>     
                                     </div>
                                 </div>
 
