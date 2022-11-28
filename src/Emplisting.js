@@ -7,15 +7,23 @@ import Logout from "./Logout";
 
 const Emplisting = () => {
     const[empdata, empdatachange] = useState([]);
+    const[errMessage, setErrMessage]=useState('');
     const navigate=useNavigate();
 
     const getcourses = async () => {
         try {
             const response = await axios.get("http://localhost:8000/data/");
             empdatachange(response.data);
-        } catch (error) {
-            console.log(error);
-        }
+        } catch(err) {
+            if(!err?.response){
+             setErrMessage('No server response');
+            } else if (err.response?.status === 404){
+                navigate("*")
+            }
+            else {
+             setErrMessage('Saved changes failed');
+            }
+    }
       };
 
             
@@ -26,6 +34,7 @@ const Emplisting = () => {
         } else {navigate("/")}
       },[navigate]);
 
+      
     const LoadEdit=(id) => {
         navigate("/employee/edit/"+id);
     }
@@ -44,6 +53,8 @@ const Emplisting = () => {
     }
 
     return (
+        <>
+        <p className={errMessage ? "card-body bg-danger text-white errmsg": "offscreen"} aria-live="assertive">{errMessage}</p> 
        <div className="container h-100 d-inline-block">
         {<Logout/>}
             <div className="card" style={{"textAlign": "left"}}>
@@ -93,6 +104,7 @@ const Emplisting = () => {
                 </div>
             </div>
         </div> 
+        </>
         )
     
 }
