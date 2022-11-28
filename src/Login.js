@@ -8,7 +8,6 @@ function Login() {
   const [password, setPassword] = useState('')
   const navigate=useNavigate();
 
-//=====================================================================
   const handleEmail = (e) => {
     setEmail(e.target.value)
   }
@@ -17,25 +16,25 @@ function Login() {
     setPassword(e.target.value)
   }
 
-
-//=====================================================================
-  const handleApi = () => {
-    axios.post('https://reqres.in/api/login', {
-      email: email,
-      password: password
-    }).then(result => {
-        window.localStorage.setItem("emailData",JSON.stringify(email))
-        window.localStorage.setItem("passwordData",JSON.stringify(password))
-        alert('success');
-        navigate("/course");
-    })
-      .catch(error => {
-        alert(error.response);
-        console.log(error);
+  const handleApi = async (event) => {
+    event.preventDefault()
+    try {
+      const response  = await  axios.post('https://reqres.in/api/login', {
+        email: email,
+        password: password
       })
+      window.localStorage.setItem("user",JSON.stringify(response.data))
+      setEmail('')
+      setPassword('')
+      alert('success')
+      navigate('/course')
+    }
+      catch(exception) {
+        alert("service error");
+        console.log(exception)
+      }
   }
 
-//=====================================================================
 
   return (
     <div>

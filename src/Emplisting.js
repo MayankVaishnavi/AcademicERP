@@ -1,30 +1,13 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 import './style.css'
-import './test.js'
 import Logout from "./Logout";
-import Login from "./Login";
+
 
 const Emplisting = () => {
     const[empdata, empdatachange] = useState([]);
     const navigate=useNavigate();
-
-  //=====================================================================
-  const [showLogin, setShowLogin] =useState(false)
-  //=====================================================================
-
-  const getEmail=window.localStorage.getItem("emailData")
-  const getPassword=window.localStorage.getItem("passwordData")
-
-
-  useEffect(()=>{ 
-    if(getEmail && getPassword){
-        setShowLogin(true);
-    } 
-  },[]); 
- //=====================================================================
-
 
     const getcourses = async () => {
         try {
@@ -37,8 +20,11 @@ const Emplisting = () => {
 
             
       useEffect(() => {
+        const getuserArr=window.localStorage.getItem("user")
+        if ((getuserArr && getuserArr.length)) {
         getcourses();
-      },[]);
+        } else {navigate("/")}
+      },[navigate]);
 
     const LoadEdit=(id) => {
         navigate("/employee/edit/"+id);
@@ -58,8 +44,6 @@ const Emplisting = () => {
     }
 
     return (
-     <>
-     { showLogin ? 
        <div className="container h-100 d-inline-block">
         {<Logout/>}
             <div className="card" style={{"textAlign": "left"}}>
@@ -108,13 +92,10 @@ const Emplisting = () => {
                     </table>
                 </div>
             </div>
-        </div> : <Login/> 
-    }
-    </>
-
+        </div> 
         )
     
 }
 
 
-export default Emplisting;
+export default Emplisting;	
