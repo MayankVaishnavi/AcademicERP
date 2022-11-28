@@ -12,7 +12,9 @@ function Logout() {
 
     return (
         <>
+         <div style={{"float":"right"}}>
             <button className="btn btn-outline-danger" onClick={handleClick}>Logout</button>
+            </div>
         </>
     )
 }

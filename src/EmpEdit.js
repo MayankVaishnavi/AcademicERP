@@ -60,9 +60,11 @@ const EmpEdit = () => {
         setShow2(true);
     }
     return (
+        <>
+
         <div className="row">
-            {<Logout/>}
             <div className="offset-lg-3 col-lg-6">
+            {<Logout/>}
                 <form className="container" onSubmit={handlesubmit}>
                     <div className="card" style={{"textAlign": "left"}}>
                         <div className="card-title p-3 mb-2 bg-info text-dark">
@@ -147,6 +149,7 @@ const EmpEdit = () => {
                 </form>
             </div>
         </div>
+        </>
     );
 }
 
