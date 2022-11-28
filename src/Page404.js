@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Page404() { 
+
+    useEffect(()=> {
+        localStorage.clear();
+    },[])
+
     const navigate=useNavigate();
     const errorPage =() => {
-        localStorage.clear();
         navigate("/");
 
     }

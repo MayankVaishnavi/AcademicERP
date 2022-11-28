@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import './style.css'
-// import Logout from "./Logout";
+import Logout from "./Logout";
 
 const EmpEdit = () => {
     const[show1, setShow1]=useState(true);
@@ -11,23 +11,27 @@ const EmpEdit = () => {
     const navigate=useNavigate();
     const{empid}=useParams();
 
+
     useEffect(()=>{
-        axios.get("http://localhost:8000/data/"+empid)
-        .then(res => {
-            course_idchange(res.data.id);
-            course_codechange(res.data.course_code);
-            course_namechange(res.data.course_name);
-            course_descriptionchange(res.data.course_description);
-            course_yearchange(res.data.course_year);
-            course_termchange(res.data.course_term);
-            course_creditschange(res.data.course_credits);
-            course_capacitychange(res.data.course_capacity);
-            course_prerequisiteschange(res.data.course_prerequisites);
-        }).catch(err => {
-            console.log(err.message);
-            {err.response.status === 404 && navigate("*")}
-        })
-    },[empid]);
+        const getuserArr=window.localStorage.getItem("user")
+            if ((getuserArr && getuserArr.length)) {
+                axios.get("http://localhost:8000/data/"+empid)
+                .then(res => {
+                    course_idchange(res.data.id);
+                    course_codechange(res.data.course_code);
+                    course_namechange(res.data.course_name);
+                    course_descriptionchange(res.data.course_description);
+                    course_yearchange(res.data.course_year);
+                    course_termchange(res.data.course_term);
+                    course_creditschange(res.data.course_credits);
+                    course_capacitychange(res.data.course_capacity);
+                    course_prerequisiteschange(res.data.course_prerequisites);
+                }).catch((err) => {err.response.status === 404 && navigate("*")} )
+                .catch(err => {
+                    console.log(err.message);
+                    })
+            } else {navigate("/")}
+    },[empid,navigate]);
 
 
     const[id,course_idchange]=useState("");
@@ -59,7 +63,7 @@ const EmpEdit = () => {
     }
     return (
         <div className="row">
-            {/* {<Logout/>} */}
+            {<Logout/>}
             <div className="offset-lg-3 col-lg-6">
                 <form className="container" onSubmit={handlesubmit}>
                     <div className="card" style={{"textAlign": "left"}}>
@@ -139,14 +143,11 @@ const EmpEdit = () => {
                                         <Link to="/course" className="btn btn-outline-danger">Back</Link>     
                                     </div>
                                 </div>
-
-
                             </div>
                         </div>
                     </div>
                 </form>
             </div>
-
         </div>
     );
 }

@@ -9,10 +9,10 @@ function Logout() {
         localStorage.clear();
         navigate("/", { replace: true });
     }
-    
+
     return (
         <>
-            <button onClick={handleClick}>Logout</button>
+            <button className="btn btn-outline-danger" onClick={handleClick}>Logout</button>
         </>
     )
 }
