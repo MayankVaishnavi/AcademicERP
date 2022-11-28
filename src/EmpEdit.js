@@ -26,10 +26,7 @@ const EmpEdit = () => {
                     course_creditschange(res.data.course_credits);
                     course_capacitychange(res.data.course_capacity);
                     course_prerequisiteschange(res.data.course_prerequisites);
-                }).catch((err) => {err.response.status === 404 && navigate("*")} )
-                .catch(err => {
-                    console.log(err.message);
-                    })
+                }).catch((err) => {err.response.status === 404 ? navigate("*") : console.log(err.message);} )
             } else {navigate("/")}
     },[empid,navigate]);
 
