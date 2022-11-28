@@ -1,0 +1,22 @@
+.card-title {
+  text-align: center;
+  border-bottom-style: solid;
+
+}
+
+label {
+  font-weight: bold;
+  color: black;
+}
+
+.col-lg-12 {
+  margin:10px;
+}
+
+thead {
+  background-color: rgba(0, 0, 0, 0.587);
+}
+
+td {
+  font-family: Arial, Helvetica, sans-serif;
+}
