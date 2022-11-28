@@ -7,14 +7,13 @@ import Logout from "./Logout";
 const EmpEdit = () => {
     const[show1, setShow1]=useState(true);
     const[show2, setShow2]=useState(false);
+    const getuserArr=window.localStorage.getItem("user")
 
     const navigate=useNavigate();
     const{empid}=useParams();
 
 
     useEffect(()=>{
-        const getuserArr=window.localStorage.getItem("user")
-            if ((getuserArr && getuserArr.length)) {
                 axios.get("http://localhost:8000/data/"+empid)
                 .then(res => {
                     course_idchange(res.data.id);
@@ -27,7 +26,7 @@ const EmpEdit = () => {
                     course_capacitychange(res.data.course_capacity);
                     course_prerequisiteschange(res.data.course_prerequisites);
                 }).catch((err) => {err.response.status === 404 ? navigate("*") : console.log(err.message);} )
-            } else {navigate("/")}
+                if (!(getuserArr && getuserArr.length)) {navigate("/")}
     },[empid,navigate]);
 
 
@@ -44,6 +43,7 @@ const EmpEdit = () => {
 
     const handlesubmit=(e)=> {
         e.preventDefault();
+        if (!(getuserArr && getuserArr.length)) {
         const empdata={id,course_code,course_name,course_description,course_year,course_term,course_credits,course_capacity,course_prerequisites};
         axios.put("http://localhost:8000/data/"+empid, empdata)
              .then(res => {
@@ -52,6 +52,7 @@ const EmpEdit = () => {
              }).catch(err => {
                 console.log(err.message);
             });
+        } else {navigate("/")}
     }
 
     const handleclick=()=>{
