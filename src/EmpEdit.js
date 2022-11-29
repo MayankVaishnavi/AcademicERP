@@ -51,6 +51,7 @@ const EmpEdit = () => {
         if ((getuserArr && getuserArr.length)) {
         getcourses();
         } else {navigate("/")}
+        // eslint-disable-next-line
       },[navigate]);
 
 //===============================================================================================================================
@@ -81,6 +82,8 @@ const EmpEdit = () => {
         } 
         else {navigate("/")}
     }
+
+ 
 
 // useEffect(() => {
 // if (Object.keys(formErrors).length === 0 && isSubmit)
@@ -135,13 +138,14 @@ const EmpEdit = () => {
                                         <input name="course_description" required disabled={show1} value={formValues.course_description} onChange={handleChange} className="form-control"></input>
                                     </div>
                                 </div>
-
+                               
                                 <div className="col-lg-12">
                                     <div className="form-group">
                                         <label>Course Year</label>
                                         <input name="course_year" required disabled={show1} value={formValues.course_year} onChange={handleChange} className="form-control"></input>
                                        </div>
                                 </div>
+                                <span className="text-danger">{formErrors.course_year}</span>
 
                                 <div className="col-lg-12">
                                     <div className="form-group">
@@ -149,6 +153,7 @@ const EmpEdit = () => {
                                         <input name="course_term" required disabled={show1} value={formValues.course_term} onChange={handleChange} className="form-control"></input>
                                     </div>
                                 </div>
+                                <span className="text-danger">{formErrors.course_term}</span>
 
                                 <div className="col-lg-12">
                                     <div className="form-group">
