@@ -4,7 +4,6 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import './style.css'
 import Logout from "./Logout";
 import './DisableRtclick'
-//import Validation from "./Validation";
 
 const EmpEdit = () => {
     const initialValues= {
@@ -16,12 +15,18 @@ const EmpEdit = () => {
         course_term: "",
         course_credits: "",
         course_capacity: "",
-        course_prerequisites: ""
+        course_prerequisites: "",
+        course_faculty:""
     }
     const[formValues, setFormValues]=useState(initialValues)
     const [validation, setValidation]=useState({course_name: "", course_year: "", course_term: "", course_credits: "", course_capacity: "", course_prerequisites: ""});
     const[errMessage, setErrMessage]=useState('');
     
+
+    //==========================================================================================
+    const[coursefaculty, setCourseFaculty]=useState([]);
+
+    //==========================================================================================
     
     const[isSubmit, setIsSubmit]=useState(false);
     const[show1, setShow1]=useState(true);
@@ -30,6 +35,7 @@ const EmpEdit = () => {
     const navigate=useNavigate();
     const{empid}=useParams();
 
+    //===================================================================================================================
     const getcourses = async () => {
         try {
             const response = await axios.get("http://localhost:8000/data/"+empid);
@@ -49,10 +55,37 @@ const EmpEdit = () => {
       useEffect(() => {
         const getuserArr=window.localStorage.getItem("user")
         if ((getuserArr && getuserArr.length)) {
+            console.log(getcourses());
         getcourses();
         } else {navigate("/")}
         // eslint-disable-next-line
       },[]);
+
+
+
+//===============================================================================================================================
+const getfaculty = async () => {
+    try {
+        const response = await axios.get("http://localhost:8001/Faculty");
+        setCourseFaculty(response.data);
+    } catch(err) {
+        if(!err?.response){
+         setErrMessage('No server response');
+        } else if (err.response?.status === 404){
+            navigate("*")
+        }
+        else {
+         setErrMessage('Saved changes failed');
+        }
+    }
+  };
+
+  useEffect(() => {
+    const getuserArr=window.localStorage.getItem("user")
+    if ((getuserArr && getuserArr.length)) { getfaculty();}
+    else {navigate("/")}
+    // eslint-disable-next-line
+  },[]);
 
 //===============================================================================================================================
     const handleChange = (e) => {
@@ -112,7 +145,6 @@ useEffect(() => {
     const handlesubmit =  (e) => {
         e.preventDefault();
         if ((getuserArr && getuserArr.length)) {
-        
             if(isSubmit){
                     try {
                         const response=  axios.put("http://localhost:8000/data/"+empid, formValues)
@@ -128,7 +160,7 @@ useEffect(() => {
                                 setErrMessage('Saved changes failed');
                                 }
                             }
-                    } else { alert ("Please correct the errors");}
+                    } else { alert ("Please correct the errors or hit the Back button");}
         }
         else {navigate("/")}
     }
@@ -179,7 +211,7 @@ useEffect(() => {
                                 <div className="col-lg-12">
                                     <div className="form-group">
                                         <label>Course Description</label>
-                                        <input name="course_description" required disabled={show1} value={formValues.course_description} onChange={(e) => handleChange(e)} className="form-control"></input>
+                                        <textarea name="course_description" rows={3} cols={5} disabled={show1} value={formValues.course_description} onChange={(e) => handleChange(e)} className="form-control"></textarea>
                                     </div>
                                 </div>
                                
@@ -217,6 +249,19 @@ useEffect(() => {
                                     <div className="form-group">
                                         <label>Course Prerequisites</label>
                                         <input name="course_prerequisites" disabled={show1} value={formValues.course_prerequisites} onChange={(e) => handleChange(e)} className="form-control"></input>
+                                    </div>
+                                </div>
+
+                                <div className="col-lg-12">
+                                    <div className="form-group">
+                                        <label>Faculty</label>
+                                        <select required name="course_faculty" disabled={show1} value={formValues.course_faculty} onChange={(e) => handleChange(e)} className="form-control">
+                                        {
+                                            coursefaculty.map((faculty)=> (
+                                            <option key={faculty.id} value={faculty.course_faculty}> {faculty.course_faculty}</option>
+                                            ))
+                                        }
+                                        </select>
                                     </div>
                                 </div>
                                 

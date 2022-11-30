@@ -32,6 +32,7 @@ const Emplisting = () => {
         if ((getuserArr && getuserArr.length)) {
         getcourses();
         } else {navigate("/")}
+        // eslint-disable-next-line
       },[navigate]);
 
       
@@ -62,6 +63,7 @@ const Emplisting = () => {
                     <h2>Course Listing</h2>
                 </div>
                 <div className="card-body">
+                <div className="table-responsive">
                     <table className="table table-hover table-bordered">
                         <thead className="text-white">
                             <tr>
@@ -74,6 +76,7 @@ const Emplisting = () => {
                                 <td>Course Credits</td>
                                 <td>Course Capacity</td>
                                 <td>Course Prerequisites</td>
+                                <td>Faculty</td>
                                 <td>Action</td>
                             </tr>
                         </thead>
@@ -92,6 +95,7 @@ const Emplisting = () => {
                                         <td>{item.course_credits}</td>
                                         <td>{item.course_capacity}</td>
                                         <td>{item.course_prerequisites}</td>
+                                        <td>{item.course_faculty}</td>
                                         <td><button onClick={() => {LoadEdit(item.id)}} className="btn btn-outline-success">Edit</button>
                                         <button onClick={() => {Removefunction(item.id)}} className="btn btn-outline-danger">Remove</button>
                                         </td>
@@ -101,6 +105,7 @@ const Emplisting = () => {
 
                         </tbody>
                     </table>
+                    </div>
                 </div>
             </div>
         </div> 
