@@ -40,7 +40,6 @@ const Emplisting = () => {
         navigate("/employee/edit/"+id);
     }
 
-
     const Removefunction=(id) => {
         if(window.confirm('Do you want to remove the employee ?')){
             axios.delete("http://localhost:8000/data/"+id)
@@ -94,7 +93,7 @@ const Emplisting = () => {
                                         <td>{item.course_term}</td>
                                         <td>{item.course_credits}</td>
                                         <td>{item.course_capacity}</td>
-                                        <td>{item.course_prerequisites}</td>
+                                        <td><ul>{item.course_prerequisites.split(',').map((items, i)=>(<li key={i}>{items}</li>))}</ul></td>
                                         <td>{item.course_faculty}</td>
                                         <td><button onClick={() => {LoadEdit(item.id)}} className="btn btn-outline-success">Edit</button>
                                         <button onClick={() => {Removefunction(item.id)}} className="btn btn-outline-danger">Remove</button>

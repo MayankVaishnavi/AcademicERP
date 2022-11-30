@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import './style.css'
 import Logout from "./Logout";
+import MultiSelect from  'multiselect-react-dropdown'
 import './DisableRtclick'
 
 const EmpEdit = () => {
@@ -25,7 +26,7 @@ const EmpEdit = () => {
 
     //==========================================================================================
     const[coursefaculty, setCourseFaculty]=useState([]);
-
+    const[courseprerequisites, setCoursePrerequisites]=useState([]);
     //==========================================================================================
     
     const[isSubmit, setIsSubmit]=useState(false);
@@ -55,7 +56,6 @@ const EmpEdit = () => {
       useEffect(() => {
         const getuserArr=window.localStorage.getItem("user")
         if ((getuserArr && getuserArr.length)) {
-            console.log(getcourses());
         getcourses();
         } else {navigate("/")}
         // eslint-disable-next-line
@@ -87,11 +87,51 @@ const getfaculty = async () => {
     // eslint-disable-next-line
   },[]);
 
+//==============================================================================================================================
+const getprerequist = async () => {
+    try {
+        const getcourseprerequist=[];
+        const response = await axios.get("http://localhost:8002/prequest");
+        for(let i=0; i<response.data.length; i++){
+            getcourseprerequist.push(response.data[i].course_name);
+        }
+        setCoursePrerequisites(getcourseprerequist);
+    } catch(err) {
+        if(!err?.response){
+         setErrMessage('No server response');
+        } else if (err.response?.status === 404){
+            navigate("*")
+        }
+        else {
+         setErrMessage('Saved changes failed');
+        }
+    }
+  };
+
+  useEffect(() => {
+    const getuserArr=window.localStorage.getItem("user")
+    if ((getuserArr && getuserArr.length)) { 
+        getprerequist();
+    }
+    else {navigate("/")}
+    // eslint-disable-next-line
+  },[]);
+
 //===============================================================================================================================
     const handleChange = (e) => {
         const {name, value} = e.target;
         setFormValues({...formValues, [name]: value});
     }
+
+    const handleSelect = (e) => {
+        const getselectValues= []
+        getselectValues.push(e);
+        formValues.course_prerequisites=""
+        formValues.course_prerequisites=getselectValues
+        formValues.course_prerequisites= formValues.course_prerequisites.toString()     
+    }
+
+    
 //===============================================================================================================================
 const checkValidation = () => {
     let errors = {...validation};
@@ -144,6 +184,8 @@ useEffect(() => {
 //=====================================================================================================================
     const handlesubmit =  (e) => {
         e.preventDefault();
+       console.log("HI"+ JSON.stringify(formValues.course_prerequisites));
+        
         if ((getuserArr && getuserArr.length)) {
             if(isSubmit){
                     try {
@@ -173,6 +215,11 @@ useEffect(() => {
         setShow2(true);
     } else {navigate("/")}
     }
+
+
+
+ //=============================================================================================================================
+
 //==============================================================================================================================
     return (
         <>
@@ -248,7 +295,10 @@ useEffect(() => {
                                 <div className="col-lg-12">
                                     <div className="form-group">
                                         <label>Course Prerequisites</label>
-                                        <input name="course_prerequisites" disabled={show1} value={formValues.course_prerequisites} onChange={(e) => handleChange(e)} className="form-control"></input>
+                                        <MultiSelect name="course_prerequisites" isObject={false} disable={show1} selectedValues={formValues.course_prerequisites.split(',')} 
+                                        options={courseprerequisites} onSelect={e => handleSelect(e)} onRemove={e => handleSelect(e)}
+                                        showCheckbox
+                                        />                                   
                                     </div>
                                 </div>
 
