@@ -23,7 +23,7 @@ const EmpEdit = () => {
     const[errMessage, setErrMessage]=useState('');
     
     
-    //const[isSubmit, setIsSubmit]=useState(false);
+    const[isSubmit, setIsSubmit]=useState(false);
     const[show1, setShow1]=useState(true);
     const[show2, setShow2]=useState(false);
     const getuserArr=window.localStorage.getItem("user")
@@ -95,7 +95,13 @@ const checkValidation = () => {
         errors.course_term = "Course Term allowed range [1-12]"
     } else { errors.course_term = "" }
 
-    setValidation(errors);
+    if((errors.course_name 
+        || errors.course_credits 
+        || errors.course_capacity 
+        || errors.course_year 
+        || errors.course_term) ? setIsSubmit(false): setIsSubmit(true));
+    
+        setValidation(errors);
     }
 
 useEffect(() => {
@@ -106,21 +112,24 @@ useEffect(() => {
     const handlesubmit =  (e) => {
         e.preventDefault();
         if ((getuserArr && getuserArr.length)) {
-        try {
-               const response=  axios.put("http://localhost:8000/data/"+empid, formValues)
-                alert("Changes saved successfully", response);
-                navigate("/course");
-             } catch(err) {
-                    if(!err?.response){
-                     setErrMessage('No server response');
-                    } else if (err.response?.status === 404){
-                        navigate("*")
-                    }
-                    else {
-                     setErrMessage('Saved changes failed');
-                    }
+        
+            if(isSubmit){
+                    try {
+                        const response=  axios.put("http://localhost:8000/data/"+empid, formValues)
+                            alert("Changes saved successfully", response);
+                            navigate("/course");
+                        } catch(err) {
+                                if(!err?.response){
+                                setErrMessage('No server response');
+                                } else if (err.response?.status === 404){
+                                    navigate("*")
+                                }
+                                else {
+                                setErrMessage('Saved changes failed');
+                                }
+                            }
+                    } else { alert ("Please correct the errors");}
         }
-        } 
         else {navigate("/")}
     }
 
