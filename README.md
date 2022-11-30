@@ -8,6 +8,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 2. npm i react-router-dom
 3. npm i bootstrap
 4. npm i -g json-server -> (It will create db.json file and we have to make the server up , for that go to the project directory from command line and write json-server --watch db.json --port 8000 )
+5. npm i multiselect-react-dropdown (for the MultiSelect option)
 
 
 
