@@ -4,7 +4,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import './style.css'
 import Logout from "./Logout";
 import './DisableRtclick'
-import Validation from "./Validation";
+//import Validation from "./Validation";
 
 const EmpEdit = () => {
     const initialValues= {
@@ -19,11 +19,11 @@ const EmpEdit = () => {
         course_prerequisites: ""
     }
     const[formValues, setFormValues]=useState(initialValues)
-
-    const[formErrors, setFormErrors]=useState({});
+    const [validation, setValidation]=useState({course_name: "", course_year: "", course_term: "", course_credits: "", course_capacity: "", course_prerequisites: ""});
     const[errMessage, setErrMessage]=useState('');
     
-    // const[isSubmit, setIsSubmit]=useState(false);
+    
+    //const[isSubmit, setIsSubmit]=useState(false);
     const[show1, setShow1]=useState(true);
     const[show2, setShow2]=useState(false);
     const getuserArr=window.localStorage.getItem("user")
@@ -52,7 +52,7 @@ const EmpEdit = () => {
         getcourses();
         } else {navigate("/")}
         // eslint-disable-next-line
-      },[navigate]);
+      },[]);
 
 //===============================================================================================================================
     const handleChange = (e) => {
@@ -60,13 +60,54 @@ const EmpEdit = () => {
         setFormValues({...formValues, [name]: value});
     }
 //===============================================================================================================================
+const checkValidation = () => {
+    let errors = {...validation};
+    const course_yearRegex =  /^[1-5]$/
+    const course_termRegex =  /^((1[0-2]|[1-9])|0[1-9])$/
 
-    const handlesubmit = async (e) => {
+    const course_year = formValues.course_year;
+    const course_term = formValues.course_term;
+    const course_name = formValues.course_name;
+    const course_credits = formValues.course_credits;
+    const course_capacity = formValues.course_capacity;
+
+    if(!course_name){
+        errors.course_name = "Course Name is required"
+    } else { errors.course_name = "" }
+
+    if(!course_credits){
+        errors.course_credits = "Course Credits is required"
+    } else { errors.course_credits = "" }
+
+    if(!course_capacity){
+        errors.course_capacity = "Course Capacity is required"
+    } else { errors.course_capacity = "" }
+
+    if(!course_year){
+        errors.course_year = "Course Year is required"
+    } else if(!(course_yearRegex.test(course_year))) { 
+        errors.course_year = "Course Year allowed range [1-5]"
+    } else { errors.course_year = "" }
+
+    if(!course_term){
+        errors.course_term = "Course Term is required"
+    } else if(!(course_termRegex.test(course_term))) { 
+        errors.course_term = "Course Term allowed range [1-12]"
+    } else { errors.course_term = "" }
+
+    setValidation(errors);
+    }
+
+useEffect(() => {
+    checkValidation();
+    // eslint-disable-next-line
+  }, [formValues]);
+//=====================================================================================================================
+    const handlesubmit =  (e) => {
         e.preventDefault();
         if ((getuserArr && getuserArr.length)) {
-            setFormErrors(Validation(formValues));  
         try {
-               const response= await axios.put("http://localhost:8000/data/"+empid, formValues)
+               const response=  axios.put("http://localhost:8000/data/"+empid, formValues)
                 alert("Changes saved successfully", response);
                 navigate("/course");
              } catch(err) {
@@ -78,17 +119,11 @@ const EmpEdit = () => {
                     else {
                      setErrMessage('Saved changes failed');
                     }
-            }
+        }
         } 
         else {navigate("/")}
     }
 
- 
-
-// useEffect(() => {
-// if (Object.keys(formErrors).length === 0 && isSubmit)
-
-// },[]);
 //==============================================================================================================================
     const handleclick=()=>{
         const getuserArr=window.localStorage.getItem("user")
@@ -128,51 +163,51 @@ const EmpEdit = () => {
                                 <div className="col-lg-12">
                                     <div className="form-group">
                                         <label>Course Name</label>
-                                        <input name="course_name" required disabled={show1} value={formValues.course_name} onChange={handleChange} className="form-control"></input>
+                                        <input name="course_name" required disabled={show1} value={formValues.course_name} onChange={(e) => handleChange(e)} className="form-control"></input>
                                     </div>
                                 </div>
 
                                 <div className="col-lg-12">
                                     <div className="form-group">
                                         <label>Course Description</label>
-                                        <input name="course_description" required disabled={show1} value={formValues.course_description} onChange={handleChange} className="form-control"></input>
+                                        <input name="course_description" required disabled={show1} value={formValues.course_description} onChange={(e) => handleChange(e)} className="form-control"></input>
                                     </div>
                                 </div>
                                
                                 <div className="col-lg-12">
                                     <div className="form-group">
                                         <label>Course Year</label>
-                                        <input name="course_year" required disabled={show1} value={formValues.course_year} onChange={handleChange} className="form-control"></input>
+                                        <input name="course_year" required disabled={show1} value={formValues.course_year} onChange={(e) => handleChange(e)} className="form-control"></input>
                                        </div>
+                                       {!show1 && validation.course_year && <span className="text-danger">{validation.course_year}</span>}
                                 </div>
-                                <span className="text-danger">{formErrors.course_year}</span>
 
                                 <div className="col-lg-12">
                                     <div className="form-group">
                                         <label>Course Term</label>
-                                        <input name="course_term" required disabled={show1} value={formValues.course_term} onChange={handleChange} className="form-control"></input>
+                                        <input name="course_term" required disabled={show1} value={formValues.course_term} onChange={(e) => handleChange(e)} className="form-control"></input>
                                     </div>
+                                    {!show1 && validation.course_term && <span className="text-danger">{validation.course_term}</span>}
                                 </div>
-                                <span className="text-danger">{formErrors.course_term}</span>
 
                                 <div className="col-lg-12">
                                     <div className="form-group">
                                         <label>Course Credits</label>
-                                        <input name="course_credits" required disabled={show1} value={formValues.course_credits} onChange={handleChange} className="form-control"></input>
+                                        <input name="course_credits" required disabled={show1} value={formValues.course_credits} onChange={(e) => handleChange(e)} className="form-control"></input>
                                     </div>
                                 </div>
 
                                 <div className="col-lg-12">
                                     <div className="form-group">
                                         <label>Course Capacity</label>
-                                        <input name="course_capacity" required disabled={show1} value={formValues.course_capacity} onChange={handleChange} className="form-control"></input>
+                                        <input name="course_capacity" required disabled={show1} value={formValues.course_capacity} onChange={(e) => handleChange(e)} className="form-control"></input>
                                     </div>
                                 </div>
 
                                 <div className="col-lg-12">
                                     <div className="form-group">
                                         <label>Course Prerequisites</label>
-                                        <input name="course_prerequisites" disabled={show1} value={formValues.course_prerequisites} onChange={handleChange} className="form-control"></input>
+                                        <input name="course_prerequisites" disabled={show1} value={formValues.course_prerequisites} onChange={(e) => handleChange(e)} className="form-control"></input>
                                     </div>
                                 </div>
                                 
