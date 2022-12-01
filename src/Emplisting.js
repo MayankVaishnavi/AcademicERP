@@ -3,17 +3,20 @@ import { useEffect, useState } from "react";
 import { useNavigate} from "react-router-dom";
 import './style.css'
 import Logout from "./Logout";
-
+import Loading from "./Loading";
+import './Loading.css'
 
 const Emplisting = () => {
     const[empdata, empdatachange] = useState([]);
     const[errMessage, setErrMessage]=useState('');
+    const[loading, setLoading]=useState(false);
     const navigate=useNavigate();
 
     const getcourses = async () => {
         try {
             const response = await axios.get("http://localhost:8000/data/");
             empdatachange(response.data);
+            setLoading(true);
         } catch(err) {
             if(!err?.response){
              setErrMessage('No server response');
@@ -46,6 +49,7 @@ const Emplisting = () => {
             .then(res => {
                alert("Removed successfully");
                window.location.reload();
+               setLoading(true);
             }).catch(err => {
                console.log(err.message);
            });
@@ -55,6 +59,7 @@ const Emplisting = () => {
     return (
         <>
         <p className={errMessage ? "card-body bg-danger text-white errmsg": "offscreen"} aria-live="assertive">{errMessage}</p> 
+       { loading ?
        <div className="container h-100 d-inline-block">
         {<Logout/>}
             <div className="card" style={{"textAlign": "left"}}>
@@ -107,7 +112,7 @@ const Emplisting = () => {
                     </div>
                 </div>
             </div>
-        </div> 
+        </div> : <Loading/> }
         </>
         )
     

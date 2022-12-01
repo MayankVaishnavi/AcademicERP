@@ -5,6 +5,8 @@ import './style.css'
 import Logout from "./Logout";
 import MultiSelect from  'multiselect-react-dropdown'
 import './DisableRtclick'
+import Loading from "./Loading";
+import './Loading.css'
 
 const EmpEdit = () => {
     const initialValues= {
@@ -22,7 +24,7 @@ const EmpEdit = () => {
     const[formValues, setFormValues]=useState(initialValues)
     const [validation, setValidation]=useState({course_name: "", course_year: "", course_term: "", course_credits: "", course_capacity: "", course_prerequisites: ""});
     const[errMessage, setErrMessage]=useState('');
-    
+    const[loading, setLoading]=useState(false);    
 
     //==========================================================================================
     const[coursefaculty, setCourseFaculty]=useState([]);
@@ -41,6 +43,7 @@ const EmpEdit = () => {
         try {
             const response = await axios.get("http://localhost:8000/data/"+empid);
             setFormValues(response.data);
+            setLoading(true);
         } catch(err) {
             if(!err?.response){
              setErrMessage('No server response');
@@ -183,14 +186,13 @@ useEffect(() => {
   }, [formValues]);
 //=====================================================================================================================
     const handlesubmit =  (e) => {
-        e.preventDefault();
-       console.log("HI"+ JSON.stringify(formValues.course_prerequisites));
-        
+        e.preventDefault();        
         if ((getuserArr && getuserArr.length)) {
             if(isSubmit){
                     try {
                         const response=  axios.put("http://localhost:8000/data/"+empid, formValues)
                             alert("Changes saved successfully", response);
+                            setLoading(true);
                             navigate("/course");
                         } catch(err) {
                                 if(!err?.response){
@@ -223,6 +225,7 @@ useEffect(() => {
 //==============================================================================================================================
     return (
         <>
+        {loading ?
         <div className="row">
         <p className={errMessage ? "card-body bg-danger text-white errmsg": "offscreen"} aria-live="assertive">{errMessage}</p>
             <div className="offset-lg-3 col-lg-6">
@@ -297,7 +300,7 @@ useEffect(() => {
                                         <label>Course Prerequisites</label>
                                         <MultiSelect name="course_prerequisites" isObject={false} disable={show1} selectedValues={formValues.course_prerequisites.split(',')} 
                                         options={courseprerequisites} onSelect={e => handleSelect(e)} onRemove={e => handleSelect(e)}
-                                        showCheckbox
+                                        showCheckbox 
                                         />                                   
                                     </div>
                                 </div>
@@ -327,7 +330,7 @@ useEffect(() => {
                     </div>
                 </form>
             </div>
-        </div>
+        </div> : <Loading/>}
         </>
     );
 }

@@ -3,10 +3,13 @@ import './App.css';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import './DisableRtclick'
+import Loading from "./Loading";
+import './Loading.css'
 
 function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const[loading, setLoading]=useState(false);  
   const navigate=useNavigate();
 
   const handleEmail = (e) => {
