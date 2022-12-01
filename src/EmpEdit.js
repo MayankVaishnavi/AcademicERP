@@ -130,7 +130,7 @@ const getprerequist = async () => {
         const getselectValues= []
         getselectValues.push(e);
         formValues.course_prerequisites=""
-        formValues.course_prerequisites=getselectValues
+        formValues.course_prerequisites=getselectValues.filter(item => formValues.course_name !== item)
         formValues.course_prerequisites= formValues.course_prerequisites.toString()     
     }
 
