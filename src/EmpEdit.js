@@ -298,8 +298,8 @@ useEffect(() => {
                                 <div className="col-lg-12">
                                     <div className="form-group">
                                         <label>Course Prerequisites</label>
-                                        <MultiSelect name="course_prerequisites" isObject={false} disable={show1} selectedValues={formValues.course_prerequisites.split(',')} 
-                                        options={courseprerequisites} onSelect={e => handleSelect(e)} onRemove={e => handleSelect(e)}
+                                        <MultiSelect name="course_prerequisites" isObject={false} disable={show1} selectedValues={formValues.course_prerequisites.split(',').filter(item => formValues.course_name !== item)} 
+                                        options={courseprerequisites.filter(item => formValues.course_name !== item)} onSelect={e => handleSelect(e)} onRemove={e => handleSelect(e)}
                                         showCheckbox 
                                         />                                   
                                     </div>
